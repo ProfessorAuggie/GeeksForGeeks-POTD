@@ -72,7 +72,7 @@ public class LinkedList {
     }
 }*/
 
-cclass Solution {
+class Solution {
     public static Node findFirstNode(Node head) {
         Node slow = head, fast = head;
         while (fast != null && fast.next != null) {
