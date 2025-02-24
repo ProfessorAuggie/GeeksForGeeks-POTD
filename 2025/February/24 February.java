@@ -37,19 +37,30 @@ class Main {
 
 
 
+
 class Solution {
     public ArrayList<Integer> calculateSpan(int[] arr) {
-        ArrayList<Integer> span = new ArrayList<>();
+        ArrayList<Integer> span = new ArrayList<>(arr.length);
         Stack<Integer> st = new Stack<>();
         
         for (int i = 0; i < arr.length; i++) {
-            int days = 1;
+            span.add(0);
+        }
+
+        for (int i = 0; i < arr.length; i++) {
             while (!st.isEmpty() && arr[st.peek()] <= arr[i]) {
-                days += span.get(st.pop());
+                st.pop();
             }
-            span.add(days);
+
+            if (st.isEmpty()) {
+                span.set(i, i + 1);
+            } else {
+                span.set(i, i - st.peek());
+            }
+
             st.push(i);
         }
+
         return span;
     }
 }
