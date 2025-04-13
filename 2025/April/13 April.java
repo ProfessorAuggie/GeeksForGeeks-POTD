@@ -143,30 +143,22 @@ class GFG {
     }
 */
 class Solution {
-    static ArrayList<ArrayList<String>> accountsMerge(ArrayList<ArrayList<String>> A) {
-        HashMap<String, String> p = new HashMap<>(), n = new HashMap<>();
-        for (ArrayList<String> a : A) {
-            String name = a.get(0);
-            for (int i = 1; i < a.size(); i++) {
-                p.putIfAbsent(a.get(i), a.get(i));
-                n.putIfAbsent(a.get(i), name);
-                p.put(find(p, a.get(i)), find(p, a.get(1)));
+    Node cloneGraph(Node node) {
+        if (node == null) return null;
+        Map<Node, Node> m = new HashMap<>();
+        Queue<Node> q = new LinkedList<>();
+        m.put(node, new Node(node.val));
+        q.add(node);
+        while (!q.isEmpty()) {
+            for (Node n : q.peek().neighbors) {
+                if (!m.containsKey(n)) {
+                    m.put(n, new Node(n.val));
+                    q.add(n);
+                }
+                m.get(q.peek()).neighbors.add(m.get(n));
             }
+            q.poll();
         }
-        HashMap<String, TreeSet<String>> m = new HashMap<>();
-        for (String mail : p.keySet()) m.computeIfAbsent(find(p, mail), k -> new TreeSet<>()).add(mail);
-        ArrayList<ArrayList<String>> r = new ArrayList<>();
-        for (String root : m.keySet()) {
-            ArrayList<String> t = new ArrayList<>();
-            t.add(n.get(root));
-            t.addAll(m.get(root));
-            r.add(t);
-        }
-        return r;
-    }
-
-    static String find(HashMap<String, String> p, String s) {
-        if (!p.get(s).equals(s)) p.put(s, find(p, p.get(s)));
-        return p.get(s);
+        return m.get(node);
     }
 }
